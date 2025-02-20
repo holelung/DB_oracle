@@ -638,7 +638,165 @@ WHERE EMAIL LIKE '____%'; -- 전체조회됨
 
 SELECT EMP_ID, EMP_NAME, EMAIL 
 FROM EMPLOYEE
-WHERE EMAIL LIKE '___#_' ESCAPE '#';
+WHERE EMAIL LIKE '___1_%' ESCAPE '1'; -- #이 아닌 특수문자,숫자 1개 아무거나 가능
+
+-----------------------------------------------------
+
+/* [ SELECT 작성법 - 3]
+ * 3) SELECT 컬럼명			-- 열 선택
+ * 1) FROM	 테이블 명		-- 테이블 선택
+ * 2) WHERE  조건식			-- 행 선택
+ * 4) ORDER BY 정렬 기준	-- 조회 결과 정렬
+ * 
+ * *** ORDER BY 절 ***
+ * - SELECT의 조회 결과 집합(RESULT SET)
+ * 	 원하는 순서로 정렬할 때 사용하는 구문
+ * 
+ * - 작성법
+ * ORDER BY 컬럼명 | 별칭 | 컬럼순서 | 함수 | 서브쿼리 | 프로시저
+ *					[ASC / DESC] (오름차순(기본값) / 내림차순)
+ *					[NULLS FIRST / NULLS LAST] (NULL 데이터 위치 지정) 
+ * 
+ * *** 중요!!! ***
+ * ORDER BY절은 해당 SELECT문 제일 마지막에만 수행!
+ * 
+ * - 오름 차순(ASCENDING) : 점점 커지는 순서
+ * EX) 1 -> 10, A -> Z, 가 -> 하, 과거 -> 미래 
+ * 
+ * - 내림 차순(DESCENDING) : 점점 작아지는 순서
+ * EX) 10 -> 1, Z -> A, 하 -> 가, 미래 -> 과거
+ */
+SELECT EMP_NAME 
+FROM EMPLOYEE 
+ORDER BY EMP_NAME ASC;
+
+
+-- 급여 내림 차순으로 이름, 급여 조회
+SELECT EMP_NAME, SALARY 
+FROM EMPLOYEE;
+ORDER BY SALARY DESC; -- 없어도 급여내림 차순
+
+-- + WHERE절 추가
+
+-- 부서코드가 'D5, 6, 9'인 사원의 
+-- 사번, 이름, 급여, 부서코드를
+-- 급여 내림차순으로 조회
+SELECT EMP_ID , EMP_NAME , SALARY , DEPT_CODE 
+FROM EMPLOYEE 
+WHERE DEPT_CODE IN ('D5','D6','D9')
+ORDER BY SALARY DESC;
+
+
+-- 부서코드가 'D5, 6, 9'인 사원의 
+-- 사번, 이름, 급여, 부서코드를
+-- 부서코드 오름차순
+SELECT EMP_ID , EMP_NAME , SALARY , DEPT_CODE 
+FROM EMPLOYEE 
+WHERE DEPT_CODE IN ('D5','D6','D9')
+ORDER BY DEPT_CODE ASC;
+
+--------------------------------------------------
+
+/* 별칭을 이용하여 정리하기 
+ * 
+ * - ORDER BY 절은 제일 마지막에 해석된다!
+ * 
+ * - ORDER BY 절 보다 먼저 해석되는 
+ * 	 SELECT 절의 별칭을 ORDER BY 절에서 인식할 수 있다.
+ * 
+ * - SELECT절 보다 먼저 해석되는 WHERE절에서 별칭이 사용가능한가? : X
+ * 	 
+ * */
+
+-- 사번, 이름, 연봉을
+-- 연봉 오름차순으로 정렬
+SELECT EMP_ID AS 사번, EMP_NAME AS 이름, SALARY*12 AS 연봉
+FROM EMPLOYEE 
+-- ORDER BY SALARY * 12 ASC; -- 방법1 연봉 구하는 식 적용
+ORDER BY 연봉 ASC;  -- 방법2 별칭이용
+
+-- 연봉 5000만원 이상 받는 사원의
+-- 사번, 이름, 연봉 
+-- 연봉 오름차순 정렬
+SELECT EMP_ID AS 사번, EMP_NAME 이름, SALARY * 12 AS 연봉
+FROM EMPLOYEE 
+WHERE SALARY * 12 >= 50000000
+ORDER BY 연봉 ASC;
+-------------------------------------
+/* 컬럼 순서를 이용하여 정렬하기
+ * 
+ */
+
+-- 급여가 400만 이상 , 600만 이하인 사원
+-- 사번, 이름, 급여를
+-- 급여 내림차순으로 조회
+SELECT EMP_ID, EMP_NAME, SALARY
+FROM EMPLOYEE 
+WHERE SALARY BETWEEN 4000000 AND 6000000
+ORDER BY 3 DESC;
+
+
+------------------------------------------
+
+-- SELECT 절에 작성되지 않은 컬럼을 이용해 정렬하기 
+-- 모든 사원의 사번, 이름을 부서코드 오름차순으로 조회
+SELECT EMP_ID, EMP_NAME 
+FROM EMPLOYEE 
+ORDER BY DEPT_CODE ASC;
+
+-- order by절 해석 전
+-- SELECT, FROM절 모두 해석 되어있기 때문에 
+-- SELECT절에 없는 컬럼을 작성해도 정렬 가능
+
+------------------------------------------------------
+
+/* NULLS FRIST, NULLS LAST */
+
+SELECT EMP_NAME, BONUS 
+FROM EMPLOYEE 
+ORDER BY BONUS DESC NULLS LAST;
+-- ASC 기본값 : NULLS LAST
+-- DESC 기본값 : NULLS FIRST
+
+
+-----------------------------------------------
+
+/* 정렬기준 중첩 작성 
+ * 
+ * 먼저 작성된 정렬을 적용하고그 안에서 형성된 그룹별로 정렬 진행
+ * 
+ * -- 형성되는 그룹 == 같은 컬럼 값을 가지는 행
+ * */
+
+-- 이름 부서코드 급여를 부서코드 오름차순, 급여 내림차순
+SELECT EMP_NAME , DEPT_CODE , SALARY 
+FROM EMPLOYEE 
+ORDER BY DEPT_CODE ASC , SALARY DESC ;
+
+-- EMPLOYEE 테이블에서
+-- 이름, 부서코드, 직급코드를 조회
+-- 부서코드 오름차순, 직급코드 내림차순, 이름 오름차순으로 정렬
+SELECT EMP_NAME 이름, DEPT_CODE 부서코드 , JOB_CODE 직급코드
+FROM EMPLOYEE 
+ORDER BY DEPT_CODE ASC, JOB_CODE DESC, EMP_NAME ASC;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
