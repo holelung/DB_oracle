@@ -90,13 +90,12 @@ FROM "NATIONAL" ;
 SELECT 
 	EMAIL || ' -> ' || REPLACE (EMAIL,'or.kr', 'gmail.com') AS "이메일 변경",
 	REPLACE (EMAIL,'or.kr', 'gmail.com') AS "변경된 이메일",
-FROM EMPLOYEE 
+FROM EMPLOYEE;
 
 
 -- # 모두제거하기
 SELECT
-	'###기###준###',
-	REPLACE ('###기###준###', '#', '')
+	'###기###준###', REPLACE ('###기###준###', '#', '')
 FROM DUAL;
 
 
