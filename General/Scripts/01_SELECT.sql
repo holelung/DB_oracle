@@ -244,7 +244,9 @@ SELECT
 	SALARY, 
 	'원', 
 	SALARY || '원' AS "급여"
-FROM EMPLOYEE;
+FROM EMPLOYEE;  
+
+
 
 -----------------------------
 
