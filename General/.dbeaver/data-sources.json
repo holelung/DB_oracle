@@ -68,7 +68,7 @@
 		"oracle_thin-1951c761d30-225709cc95219b46": {
 			"provider": "oracle",
 			"driver": "oracle_thin",
-			"name": "ORCL",
+			"name": "ORCL_TEST",
 			"save-password": true,
 			"configuration": {
 				"host": "localhost",
@@ -91,7 +91,7 @@
 			"name": "Development",
 			"color": "255,255,255",
 			"description": "Regular development database",
-			"auto-commit": true,
+			"auto-commit": false,
 			"confirm-execute": false,
 			"confirm-data-change": false,
 			"smart-commit": false,
