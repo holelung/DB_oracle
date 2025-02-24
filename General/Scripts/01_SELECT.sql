@@ -850,7 +850,7 @@ SELECT
 	EMP_NAME 이름,
 	DEPT_CODE 부서코드,
 	JOB_CODE 직급코드
-FROM
+FROM 
 	EMPLOYEE 
 ORDER BY
 	부서코드 ASC, -- 별칭

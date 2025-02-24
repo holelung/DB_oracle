@@ -56,6 +56,10 @@ FROM DUAL; -- 8
 SELECT 'AABBCCABC', INSTR('AABBCCABC', 'C', 5, 3)
 FROM DUAL; -- 9
 
+SELECT EMAIL, INSTR(EMAIL, '@', 2, 1)
+FROM EMPLOYEE;
+
+
 --------------------------------------------
 
 /* SUBSTR(문자열, 시작위치 [, 길이])
